@@ -189,18 +189,22 @@ const Home: React.FC = () => {
                       {value.status}
                     </span>
 
-                    <span className="ml-4">
-                      <input
-                        type="checkbox"
-                        name={`status-${value.id}`}
-                        id={`status-${value.id}`}
-                        checked={value.status === "completed"}
-                        onChange={(event) =>
-                          handleCheckboxChange(value.id, event)
-                        }
-                        className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
-                      />
-                    </span>
+                    {value.status === "timeout" ? (
+                      <span className="ml-4"></span>
+                    ) : (
+                      <span className="ml-4">
+                        <input
+                          type="checkbox"
+                          name={`status-${value.id}`}
+                          id={`status-${value.id}`}
+                          checked={value.status === "completed"}
+                          onChange={(event) =>
+                            handleCheckboxChange(value.id, event)
+                          }
+                          className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
+                        />
+                      </span>
+                    )}
                   </li>
                 ))}
             </ul>

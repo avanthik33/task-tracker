@@ -62,7 +62,9 @@ const PendingTasks: React.FC = () => {
                 <p className="text-sm text-gray-600 mb-3">
                   {value.description}
                 </p>
-                <p className="text-sm text-gray-500 mb-4">Due: {value.time}</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Due: {new Date(value.time).toLocaleString()}
+                </p>
                 <div className="flex items-center space-x-3">
                   <input
                     type="checkbox"
