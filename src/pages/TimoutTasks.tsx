@@ -26,10 +26,10 @@ const TimoutTasks: React.FC = () => {
 
   const checkTimeout = () => {
     const updatedTasks = tasks.map((item) => {
-      if (new Date(item.time) > nowDate && item.status !== "completed") {
-        return item;
-      } else {
+      if (new Date(item.time) > nowDate && item.status === "pending") {
         return { ...item, status: "timeout" };
+      } else {
+        return item;
       }
     });
     setTasks(updatedTasks);
@@ -43,6 +43,8 @@ const TimoutTasks: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [tasks]);
+
+  console.log("now date", nowDate);
 
   return (
     <>
