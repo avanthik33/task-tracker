@@ -1,14 +1,10 @@
-import "./App.css";
-import Signin from "./pages/Signin";
-import Signup from "./pages/Signup";
+// src/App.tsx
+import React from "react";
+import { router } from "./router/router";
+import { RouterProvider } from "react-router-dom";
 
-function App() {
-  return (
-    <>
-      <Signin />
-      <Signup />
-    </>
-  );
-}
+const App: React.FC = () => {
+  return <RouterProvider router={router} />;
+};
 
 export default App;
