@@ -35,7 +35,7 @@ const Navigation: React.FC = () => {
             </Link>
           </li>
           <li className="text-white font-semibold text-lg hover:bg-slate-700  rounded-lg transition duration-200 ease-in-out transform">
-            <Link className="px-4 py-2" to="#">
+            <Link className="px-4 py-2" to="timeout">
               Timeout
             </Link>
           </li>

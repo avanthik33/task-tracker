@@ -5,6 +5,7 @@ import Root from "../components/Root";
 import Home from "../pages/Home";
 import PendingTasks from "../pages/PendingTasks";
 import CompletedTasks from "../pages/CompletedTasks";
+import TimoutTasks from "../pages/TimoutTasks";
 
 export const router = createBrowserRouter([
   { index: true, element: <Signup /> },
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "pending", element: <PendingTasks /> },
       { path: "completed", element: <CompletedTasks /> },
+      { path: "timeout", element: <TimoutTasks /> },
     ],
   },
 ]);
