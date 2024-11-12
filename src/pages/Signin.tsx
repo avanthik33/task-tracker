@@ -47,14 +47,14 @@ const Signin: React.FC = () => {
     );
     if (user) {
       console.log("success");
-      localStorage.setItem("loggedUser", JSON.stringify(formData));
+      localStorage.setItem("loggedUser", JSON.stringify(user));
       navigate("/home");
     } else {
       setError("Incorrect Email or Password");
       console.log("unautherized login");
       setFormData({
-        email: "string",
-        password: "string",
+        email: "",
+        password: "",
       });
       return;
     }

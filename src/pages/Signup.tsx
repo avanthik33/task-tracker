@@ -3,6 +3,7 @@ import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
 
 interface signupData {
+  userId: number;
   username: string;
   email: string;
   phone: number;
@@ -13,6 +14,7 @@ interface signupData {
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<signupData>({
+    userId: Date.now(),
     username: "",
     email: "",
     phone: 0,
