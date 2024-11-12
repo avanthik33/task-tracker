@@ -20,6 +20,7 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
 
+
   useEffect(() => {
     if (error) {
       const errorTimeout = setTimeout(() => {
@@ -98,9 +99,7 @@ const Home: React.FC = () => {
       )}
 
       <div className="flex justify-center items-center mt-10">
-        <h1 className="text-4xl font-semibold text-gray-800">
-         Add a Task
-        </h1>
+        <h1 className="text-4xl font-semibold text-gray-800">Add a Task</h1>
       </div>
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSumbitForm} className="space-y-4">
