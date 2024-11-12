@@ -20,6 +20,29 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  const [currTime, setCurrTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrTime(new Date());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const updatedTasks = tasks.map((item) =>
+      new Date(item.time) < currTime && item.status === "pending"
+        ? { ...item, status: "timeout" }
+        : item
+    );
+
+    if (JSON.stringify(updatedTasks) !== JSON.stringify(tasks)) {
+      setTasks(updatedTasks);
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    }
+  }, [currTime, tasks]);
+
 
   useEffect(() => {
     if (error) {
