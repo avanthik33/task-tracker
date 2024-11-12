@@ -10,14 +10,6 @@ const Navigation: React.FC = () => {
 
   const handleLogout = () => {
     console.log("clicked logout");
-    // const loggedUserString = localStorage.getItem("loggedUser");
-    // const loggedUser = loggedUserString ? JSON.parse(loggedUserString) : null;
-    // const users = JSON.parse(localStorage.getItem("users") || "[]");
-    // const updatedUsers = users.filter(
-    //   (item: User) => item.email !== loggedUser.email
-    // );
-    // console.log(updatedUsers);
-    // localStorage.setItem("users", JSON.stringify(updatedUsers));
     localStorage.removeItem("loggedUser");
     navigate("/");
   };
