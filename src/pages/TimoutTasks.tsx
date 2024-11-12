@@ -8,7 +8,6 @@ type Tasks = {
   status: string;
 };
 
-
 const TimoutTasks: React.FC = () => {
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
@@ -19,32 +18,10 @@ const TimoutTasks: React.FC = () => {
       setTasks(tasks);
     }
   };
-  
+
   useEffect(() => {
     fetchTasks();
   }, []);
-
-  const checkTimeout = () => {
-    const updatedTasks = tasks.map((item) => {
-      if (new Date(item.time) > nowDate && item.status === "pending") {
-        return { ...item, status: "timeout" };
-      } else {
-        return item;
-      }
-    });
-    setTasks(updatedTasks);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      checkTimeout();
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [tasks]);
-
-  console.log("now date", nowDate);
 
   return (
     <>
