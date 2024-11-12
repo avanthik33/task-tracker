@@ -49,23 +49,9 @@ const Signup: React.FC = () => {
       !formData.password
     ) {
       setError("fill all inputs!");
-      setFormData({
-        username: "",
-        email: "",
-        phone: 0,
-        confirmPass: "",
-        password: "",
-      });
       return false;
     } else if (formData.password !== formData.confirmPass) {
       setError("password and confirm password in not match!");
-      setFormData({
-        username: "",
-        email: "",
-        phone: 0,
-        confirmPass: "",
-        password: "",
-      });
       return false;
     }
     const users = JSON.parse(localStorage.getItem("users") || "[]");
@@ -188,7 +174,7 @@ const Signup: React.FC = () => {
           <button
             type="submit"
             disabled={!!error}
-            className="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-md hover:bg-green-600 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-green-600 disabled:opacity-50"
           >
             Sign Up
           </button>
