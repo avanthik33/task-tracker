@@ -10,8 +10,18 @@ type Task = {
   status: string;
 };
 
+interface signupData {
+  userId: number;
+  username: string;
+  email: string;
+  phone: number;
+  confirmPass: string;
+  password: string;
+}
+
 const Home: React.FC = () => {
   const user = JSON.parse(localStorage.getItem("loggedUser") || "");
+
   const [formData, setFormData] = useState<Task>({
     id: Date.now(),
     userId: user.userId,
@@ -20,9 +30,19 @@ const Home: React.FC = () => {
     time: "",
     status: "pending",
   });
+
   const [error, setError] = useState<string>("");
+
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [loggedUser, setLoggedUser] = useState(null);
+
+  const [loggedUser, setLoggedUser] = useState<signupData>({
+    userId: user.userId,
+    username: "",
+    email: "",
+    phone: 0,
+    confirmPass: "",
+    password: "",
+  });
 
   useEffect(() => {
     const user = localStorage.getItem("loggedUser");
@@ -78,12 +98,17 @@ const Home: React.FC = () => {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
       const tasks: Task[] = JSON.parse(storedTasks);
-      setTasks(tasks);
+      const filterdTasks = tasks.filter(
+        (item) => item.userId === loggedUser.userId
+      );
+      setTasks(filterdTasks);
     }
   };
 
+  console.log("tasks", tasks);
   useEffect(() => {
-    fetchTasks();
+    if (loggedUser) fetchTasks();
+    else console.log("no user found");
   }, []);
 
   const handleSumbitForm = (event: React.FormEvent) => {
@@ -92,9 +117,13 @@ const Home: React.FC = () => {
       setError("fill all the input fields!");
       return false;
     }
-    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-    tasks.push(formData);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    const storedTasks = localStorage.getItem("tasks");
+    const tasksFromStorage: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
+
+    tasksFromStorage.push(formData);
+
+    localStorage.setItem("tasks", JSON.stringify(tasksFromStorage));
+
     setFormData({
       id: Date.now(),
       userId: user.userId,
@@ -103,26 +132,26 @@ const Home: React.FC = () => {
       time: "",
       status: "pending",
     });
-    setTasks(tasks);
+    fetchTasks();
+    // setTasks(tasksFromStorage);
   };
 
   const handleCheckboxChange = (
     id: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (event.target.checked) {
-      const updatedTasks = tasks.map((item) =>
-        item.id === id ? { ...item, status: "completed" } : item
-      );
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      fetchTasks();
-    } else {
-      const updatedTasks = tasks.map((item) =>
-        item.id === id ? { ...item, status: "pending" } : item
-      );
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      fetchTasks();
-    }
+    const storedTasks = localStorage.getItem("tasks");
+    const tasksFromStorage: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
+
+    const updatedTasks = tasksFromStorage.map((item) =>
+      item.id === id
+        ? { ...item, status: event.target.checked ? "completed" : "pending" }
+        : item
+    );
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    fetchTasks();
+    // setTasks(updatedTasks);
   };
 
   return (

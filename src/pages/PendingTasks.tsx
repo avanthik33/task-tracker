@@ -2,16 +2,58 @@ import { useEffect, useState } from "react";
 
 type Tasks = {
   id: number;
+  userId: number;
   task: string;
   description: string;
   time: string;
   status: string;
 };
+interface signupData {
+  userId: number;
+  username: string;
+  email: string;
+  phone: number;
+  confirmPass: string;
+  password: string;
+}
 
 const PendingTasks: React.FC = () => {
+  const user = JSON.parse(localStorage.getItem("loggedUser") || "");
+  const [loggedUser, setLoggedUser] = useState<signupData>({
+    userId: user.userId,
+    username: "",
+    email: "",
+    phone: 0,
+    confirmPass: "",
+    password: "",
+  });
+
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
   const [currTime, setCurrTime] = useState(new Date());
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedUser");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setLoggedUser(parsedUser);
+    }
+  }, []);
+
+  const fetchTasks = () => {
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks) {
+      const tasks: Tasks[] = JSON.parse(storedTasks);
+      const filterdTasks = tasks.filter(
+        (item) => item.userId === loggedUser.userId
+      );
+      setTasks(filterdTasks);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,18 +75,6 @@ const PendingTasks: React.FC = () => {
       localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     }
   }, [currTime, tasks]);
-
-  const fetchTasks = () => {
-    const tasks = localStorage.getItem("tasks");
-    if (tasks) {
-      const parsedTasks = JSON.parse(tasks);
-      setTasks(parsedTasks);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
 
   const handleCheckboxChange = (
     id: number,

@@ -2,20 +2,51 @@ import { useEffect, useState } from "react";
 
 type Tasks = {
   id: number;
+  userId: number;
   task: string;
   description: string;
   time: string;
   status: string;
 };
+interface signupData {
+  userId: number;
+  username: string;
+  email: string;
+  phone: number;
+  confirmPass: string;
+  password: string;
+}
 
 const CompletedTasks: React.FC = () => {
+  const user = JSON.parse(localStorage.getItem("loggedUser") || "");
+
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
+  const [loggedUser, setLoggedUser] = useState<signupData>({
+    userId: user.userId,
+    username: "",
+    email: "",
+    phone: 0,
+    confirmPass: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedUser");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setLoggedUser(parsedUser);
+    }
+  }, []);
+
   const fetchTasks = () => {
-    const tasks = localStorage.getItem("tasks");
-    if (tasks) {
-      const parsedTasks = JSON.parse(tasks);
-      setTasks(parsedTasks);
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks) {
+      const tasks: Tasks[] = JSON.parse(storedTasks);
+      const filterdTasks = tasks.filter(
+        (item) => item.userId === loggedUser.userId
+      );
+      setTasks(filterdTasks);
     }
   };
 
