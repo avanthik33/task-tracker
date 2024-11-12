@@ -8,7 +8,6 @@ type Tasks = {
   status: string;
 };
 
-const nowDate = Date.now();
 
 const TimoutTasks: React.FC = () => {
   const [tasks, setTasks] = useState<Tasks[]>([]);
@@ -20,6 +19,7 @@ const TimoutTasks: React.FC = () => {
       setTasks(tasks);
     }
   };
+  
   useEffect(() => {
     fetchTasks();
   }, []);
