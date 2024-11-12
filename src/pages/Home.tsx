@@ -3,6 +3,7 @@ import Error from "../components/Error";
 
 type Task = {
   id: number;
+  userId: number;
   task: string;
   description: string;
   time: string;
@@ -10,8 +11,10 @@ type Task = {
 };
 
 const Home: React.FC = () => {
+  const user = JSON.parse(localStorage.getItem("loggedUser") || "");
   const [formData, setFormData] = useState<Task>({
     id: Date.now(),
+    userId: user.userId,
     task: "",
     description: "",
     time: "",
@@ -19,6 +22,15 @@ const Home: React.FC = () => {
   });
   const [error, setError] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [loggedUser, setLoggedUser] = useState(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedUser");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setLoggedUser(parsedUser);
+    }
+  }, []);
 
   const [currTime, setCurrTime] = useState(new Date());
 
@@ -42,7 +54,6 @@ const Home: React.FC = () => {
       localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     }
   }, [currTime, tasks]);
-
 
   useEffect(() => {
     if (error) {
@@ -86,6 +97,7 @@ const Home: React.FC = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     setFormData({
       id: Date.now(),
+      userId: user.userId,
       task: "",
       description: "",
       time: "",
@@ -122,7 +134,9 @@ const Home: React.FC = () => {
       )}
 
       <div className="flex justify-center items-center mt-10">
-        <h1 className="text-4xl font-semibold text-gray-800">Add a Task</h1>
+        <h1 className="text-4xl font-semibold text-gray-800">
+          Hei{" " + loggedUser?.username + "  "}Add a Task
+        </h1>
       </div>
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSumbitForm} className="space-y-4">
