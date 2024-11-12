@@ -1,5 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 
+type User = {
+  email: string;
+  password: string;
+};
+
 const Navigation: React.FC = () => {
   const navigate = useNavigate();
 
@@ -8,7 +13,7 @@ const Navigation: React.FC = () => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser") || "");
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const updatedUsers = users.filter(
-      (item) => item.email !== loggedUser.email
+      (item: User) => item.email !== loggedUser.email
     );
     console.log(updatedUsers);
     localStorage.setItem("users", JSON.stringify(updatedUsers));
@@ -46,7 +51,7 @@ const Navigation: React.FC = () => {
             className="text-red-900 bg-red-100 font-semibold text-lg hover:bg-white hover:text-red-800 px-4 py-1 rounded-sm transition duration-200 ease-in-out transform"
             onClick={handleLogout}
           >
-            Logout
+            SignOut
           </button>
         </div>
       </div>

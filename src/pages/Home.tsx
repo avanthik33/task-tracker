@@ -96,8 +96,11 @@ const Home: React.FC = () => {
           <Error message={error} />
         </div>
       )}
+
       <div className="flex justify-center items-center mt-10">
-        <h1 className="text-4xl font-semibold text-gray-800">Add Task</h1>
+        <h1 className="text-4xl font-semibold text-gray-800">
+         Add a Task
+        </h1>
       </div>
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
         <form onSubmit={handleSumbitForm} className="space-y-4">
