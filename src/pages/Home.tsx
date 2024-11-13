@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Error from "../components/Error";
+import { signupData } from "./Signup";
+import useTimeInterval from "../hooks/useTimeInterval";
 
-type Task = {
+export type Tasks = {
   id: number;
   userId: number;
   task: string;
@@ -10,71 +12,90 @@ type Task = {
   status: string;
 };
 
-interface signupData {
-  userId: number;
-  username: string;
-  email: string;
-  phone: number;
-  confirmPass: string;
-  password: string;
-}
-
 const Home: React.FC = () => {
-  const user = JSON.parse(localStorage.getItem("loggedUser") || "");
-
-  const [formData, setFormData] = useState<Task>({
+  console.log("<HOME>");
+  const storedUser = localStorage.getItem("loggedUser");
+  const user: signupData | null = storedUser ? JSON.parse(storedUser) : null;
+  const [formData, setFormData] = useState<Tasks>({
     id: Date.now(),
-    userId: user.userId,
+    userId: user ? user.userId : 0,
     task: "",
     description: "",
     time: "",
     status: "pending",
   });
-
   const [error, setError] = useState<string>("");
-
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const [loggedUser, setLoggedUser] = useState<signupData>({
-    userId: user.userId,
-    username: "",
-    email: "",
-    phone: 0,
-    confirmPass: "",
-    password: "",
-  });
+  const [tasks, setTasks] = useState<Tasks[]>([]);
+  const { tasks: updatedTasks } = useTimeInterval({ task: tasks });
 
   useEffect(() => {
-    const user = localStorage.getItem("loggedUser");
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      setLoggedUser(parsedUser);
+    if (!user) {
+      setError("no logged user is found!");
+      return;
+    } else {
+      const fetchTasks = (userId: number) => {
+        const storedTasks = localStorage.getItem("tasks");
+        if (storedTasks) {
+          const tasks: Tasks[] = JSON.parse(storedTasks);
+          const filteredTasks = tasks.filter((item) => item.userId === userId);
+          setTasks((prevTasks) => {
+            if (JSON.stringify(prevTasks) !== JSON.stringify(filteredTasks)) {
+              return filteredTasks;
+            }
+            return prevTasks;
+          });
+        }
+      };
+      fetchTasks(user.userId);
     }
-  }, []);
+  }, [user, updatedTasks]);
 
-  const [currTime, setCurrTime] = useState(new Date());
+  //submit formData
+  const handleSumbitForm = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!formData.task || !formData.description || !formData.time) {
+      setError("fill all the input fields!");
+      return false;
+    }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrTime(new Date());
-    }, 5000);
+    const storedTasks = localStorage.getItem("tasks");
+    const tasksFromStorage: Tasks[] = storedTasks
+      ? JSON.parse(storedTasks)
+      : [];
+    tasksFromStorage.push(formData);
+    localStorage.setItem("tasks", JSON.stringify(tasksFromStorage));
+    setTasks(tasksFromStorage);
+    setFormData({
+      id: Date.now(),
+      userId: user ? user.userId : 0,
+      task: "",
+      description: "",
+      time: "",
+      status: "pending",
+    });
+  };
 
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const updatedTasks = tasks.map((item) =>
-      new Date(item.time) < currTime && item.status === "pending"
-        ? { ...item, status: "timeout" }
+  //checkbox change
+  const handleCheckboxChange = (
+    id: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const storedTasks = localStorage.getItem("tasks");
+    const tasksFromStorage: Tasks[] = storedTasks
+      ? JSON.parse(storedTasks)
+      : [];
+    const updatedTasks = tasksFromStorage.map((item) =>
+      item.id === id
+        ? { ...item, status: event.target.checked ? "completed" : "pending" }
         : item
     );
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setTasks(updatedTasks);
+  };
 
-    if (JSON.stringify(updatedTasks) !== JSON.stringify(tasks)) {
-      setTasks(updatedTasks);
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    }
-  }, [currTime, tasks]);
+  /////////////////////////////////////////////////////////
 
+  //error timeout
   useEffect(() => {
     if (error) {
       const errorTimeout = setTimeout(() => {
@@ -82,11 +103,12 @@ const Home: React.FC = () => {
       }, 3000);
 
       return () => {
-        clearInterval(errorTimeout);
+        clearTimeout(errorTimeout);
       };
     }
   }, [error]);
 
+  //handle input changes
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -94,65 +116,17 @@ const Home: React.FC = () => {
     }));
   };
 
-  const fetchTasks = () => {
-    const storedTasks = localStorage.getItem("tasks");
-    if (storedTasks) {
-      const tasks: Task[] = JSON.parse(storedTasks);
-      const filterdTasks = tasks.filter(
-        (item) => item.userId === loggedUser.userId
-      );
-      setTasks(filterdTasks);
-    }
-  };
-
-  console.log("tasks", tasks);
-  useEffect(() => {
-    if (loggedUser) fetchTasks();
-    else console.log("no user found");
-  }, []);
-
-  const handleSumbitForm = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!formData.task || !formData.description || !formData.time) {
-      setError("fill all the input fields!");
-      return false;
-    }
-    const storedTasks = localStorage.getItem("tasks");
-    const tasksFromStorage: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
-
-    tasksFromStorage.push(formData);
-
-    localStorage.setItem("tasks", JSON.stringify(tasksFromStorage));
-
-    setFormData({
-      id: Date.now(),
-      userId: user.userId,
-      task: "",
-      description: "",
-      time: "",
-      status: "pending",
-    });
-    fetchTasks();
-    // setTasks(tasksFromStorage);
-  };
-
-  const handleCheckboxChange = (
-    id: number,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const storedTasks = localStorage.getItem("tasks");
-    const tasksFromStorage: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
-
-    const updatedTasks = tasksFromStorage.map((item) =>
-      item.id === id
-        ? { ...item, status: event.target.checked ? "completed" : "pending" }
-        : item
+  if (!user) {
+    return (
+      <>
+        <div className="flex justify-center items-center min-h-screen">
+          <h2 className="text-2xl font-semibold text-gray-700">
+            No loggedUser found!
+          </h2>
+        </div>
+      </>
     );
-
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    fetchTasks();
-    // setTasks(updatedTasks);
-  };
+  }
 
   return (
     <>
@@ -164,7 +138,7 @@ const Home: React.FC = () => {
 
       <div className="flex justify-center items-center mt-10">
         <h1 className="text-4xl font-semibold text-gray-800">
-          Hei{" " + loggedUser?.username + "  "}Add a Task
+          Hei{" " + user?.username + "  "}Add a Task
         </h1>
       </div>
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
@@ -195,12 +169,11 @@ const Home: React.FC = () => {
             </label>
             <input
               type="text"
-              id="task"
+              id="description"
               onChange={handleInputChange}
               name="description"
               value={formData.description}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter task description"
             />
           </div>
 

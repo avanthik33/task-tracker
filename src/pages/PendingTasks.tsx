@@ -1,99 +1,66 @@
 import { useEffect, useState } from "react";
-
-type Tasks = {
-  id: number;
-  userId: number;
-  task: string;
-  description: string;
-  time: string;
-  status: string;
-};
-interface signupData {
-  userId: number;
-  username: string;
-  email: string;
-  phone: number;
-  confirmPass: string;
-  password: string;
-}
+import { Tasks } from "./Home";
+import { signupData } from "./Signup";
+import useTimeInterval from "../hooks/useTimeInterval";
 
 const PendingTasks: React.FC = () => {
-  const user = JSON.parse(localStorage.getItem("loggedUser") || "");
-  const [loggedUser, setLoggedUser] = useState<signupData>({
-    userId: user.userId,
-    username: "",
-    email: "",
-    phone: 0,
-    confirmPass: "",
-    password: "",
-  });
+  console.log("<PendingTasks>");
+  const storedUser = localStorage.getItem("loggedUser");
+  const user: signupData | null = storedUser ? JSON.parse(storedUser) : null;
 
   const [tasks, setTasks] = useState<Tasks[]>([]);
-
-  const [currTime, setCurrTime] = useState(new Date());
+  const { tasks: updatedTasks } = useTimeInterval({ task: tasks });
 
   useEffect(() => {
-    const user = localStorage.getItem("loggedUser");
     if (user) {
-      const parsedUser = JSON.parse(user);
-      setLoggedUser(parsedUser);
+      const fetchTasks = (userId: number) => {
+        const storedTasks = localStorage.getItem("tasks");
+        if (storedTasks) {
+          const tasks: Tasks[] = JSON.parse(storedTasks);
+          const filteredTasks = tasks.filter(
+            (item) => item.userId === userId && item.status === "pending"
+          );
+          setTasks((prevTasks) => {
+            if (JSON.stringify(prevTasks) !== JSON.stringify(filteredTasks)) {
+              return filteredTasks;
+            }
+            return prevTasks;
+          });
+        }
+      };
+      fetchTasks(user.userId);
     }
-  }, []);
+  }, [user, updatedTasks]);
 
-  const fetchTasks = () => {
-    const storedTasks = localStorage.getItem("tasks");
-    if (storedTasks) {
-      const tasks: Tasks[] = JSON.parse(storedTasks);
-      const filterdTasks = tasks.filter(
-        (item) => item.userId === loggedUser.userId
-      );
-      setTasks(filterdTasks);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrTime(new Date());
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const updatedTasks = tasks.map((item) =>
-      new Date(item.time) < currTime && item.status === "pending"
-        ? { ...item, status: "timeout" }
-        : item
-    );
-
-    if (JSON.stringify(updatedTasks) !== JSON.stringify(tasks)) {
-      setTasks(updatedTasks);
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    }
-  }, [currTime, tasks]);
-
+  //checkbox change
   const handleCheckboxChange = (
     id: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (event.target.checked) {
-      const updatedTasks = tasks.map((item) =>
-        item.id === id ? { ...item, status: "completed" } : item
-      );
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      fetchTasks();
-    } else {
-      const updatedTasks = tasks.map((item) =>
-        item.id === id ? { ...item, status: "pending" } : item
-      );
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      fetchTasks();
-    }
+    const storedTasks = localStorage.getItem("tasks");
+    const tasksFromStorage: Tasks[] = storedTasks
+      ? JSON.parse(storedTasks)
+      : [];
+    const updatedTasks = tasksFromStorage.map((item) =>
+      item.id === id
+        ? { ...item, status: event.target.checked ? "completed" : "pending" }
+        : item
+    );
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setTasks(updatedTasks);
   };
+
+  if (!user) {
+    return (
+      <>
+        <div className="flex justify-center items-center min-h-screen">
+          <h2 className="text-2xl font-semibold text-gray-700">
+            No loggedUser found!
+          </h2>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
