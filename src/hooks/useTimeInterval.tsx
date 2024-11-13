@@ -10,8 +10,6 @@ const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
   const [currTime, setCurrTime] = useState(new Date());
   const [tasks, setTasks] = useState(task);
 
-  console.log("TAsks", tasks);
-
   useEffect(() => {
     setTasks(task);
   }, [task]);
