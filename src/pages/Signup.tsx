@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import { validateUserInput } from "../utils";
 
 export interface signupData {
   userId: number;
@@ -13,6 +15,7 @@ export interface signupData {
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<signupData>({
     userId: Date.now(),
     username: "",
@@ -56,10 +59,18 @@ const Signup: React.FC = () => {
       setError("password and confirm password in not match!");
       return false;
     }
+    const errors = validateUserInput(formData);
+    if (Object.keys(errors).length > 0) {
+      setError(errors[0]);
+      return false;
+    }
+
+    setLoading(true);
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     users.push(formData);
     localStorage.setItem("users", JSON.stringify(users));
     console.log("successful signup");
+    setLoading(false);
     navigate("signin");
   };
 
@@ -175,10 +186,14 @@ const Signup: React.FC = () => {
 
           <button
             type="submit"
-            disabled={!!error}
+            disabled={!!error || loading}
             className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-green-600 disabled:opacity-50"
           >
-            Sign Up
+            {loading ? (
+              <CircularProgress size="20px" color="secondary" />
+            ) : (
+              "signup"
+            )}
           </button>
           <div className="text-gray-500 hover:text-blue-500 mt-5 ml-2">
             <Link to="signin">Click here to signin..</Link>

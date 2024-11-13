@@ -50,7 +50,6 @@ const Home: React.FC = () => {
     }
   }, [user, updatedTasks]);
 
-  //submit formData
   const handleSumbitForm = (event: React.FormEvent) => {
     event.preventDefault();
     if (!formData.task || !formData.description || !formData.time) {
@@ -75,7 +74,6 @@ const Home: React.FC = () => {
     });
   };
 
-  //checkbox change
   const handleCheckboxChange = (
     id: number,
     event: React.ChangeEvent<HTMLInputElement>
@@ -95,7 +93,6 @@ const Home: React.FC = () => {
 
   /////////////////////////////////////////////////////////
 
-  //error timeout
   useEffect(() => {
     if (error) {
       const errorTimeout = setTimeout(() => {
@@ -108,7 +105,6 @@ const Home: React.FC = () => {
     }
   }, [error]);
 
-  //handle input changes
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,

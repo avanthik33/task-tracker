@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export interface inputState {
   email: string;
@@ -12,6 +13,7 @@ const Signin: React.FC = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
@@ -40,11 +42,13 @@ const Signin: React.FC = () => {
       setError("fill all input fields!");
       return;
     }
+    setLoading(true);
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const user = users.find(
       (item: inputState) =>
         item.email === formData.email && item.password === formData.password
     );
+    setLoading(false);
     if (user) {
       console.log("success");
       localStorage.setItem("loggedUser", JSON.stringify(user));
@@ -105,10 +109,14 @@ const Signin: React.FC = () => {
             />
           </div>
           <button
-            disabled={!!error}
+            disabled={!!error || loading}
             className="w-full px-4 py-2 bg-blue-600 text-white rounded-md font-semibold disabled:opacity-10  hover:bg-green-600"
           >
-            Signin
+            {loading ? (
+              <CircularProgress size="20px" color="secondary" />
+            ) : (
+              "signin"
+            )}
           </button>
           <div className="text-gray-500 hover:text-blue-500 mt-5 ml-2">
             <Link to="/">Click here to create account..</Link>
