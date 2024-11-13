@@ -10,8 +10,14 @@ import Fallback from "../components/Fallback";
 import { ProtectRoute } from "../components/ProtectRoute";
 
 export const router = createBrowserRouter([
-  { index: true, element: <Signup /> },
-  { path: "signin", element: <Signin /> },
+  {
+    index: true,
+    element: <Signup />,
+  },
+  {
+    path: "signin",
+    element: <Signin />,
+  },
   {
     path: "home",
     element: (

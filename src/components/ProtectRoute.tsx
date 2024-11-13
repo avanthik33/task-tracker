@@ -12,10 +12,8 @@ export const ProtectRoute: React.FC<ProtectRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!loggedUser) {
       navigate("/signin", { replace: true });
-    } else {
-      navigate("/home", { replace: true });
     }
-  }, [loggedUser]);
+  }, [loggedUser, navigate]);
 
   if (!loggedUser) {
     return <div>Loading...</div>;
