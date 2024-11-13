@@ -1,10 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 
-type User = {
-  email: string;
-  password: string;
-};
-
 const Navigation: React.FC = () => {
   const navigate = useNavigate();
 
