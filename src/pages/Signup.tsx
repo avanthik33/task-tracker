@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
 
-interface signupData {
+export interface signupData {
   userId: number;
   username: string;
   email: string;
