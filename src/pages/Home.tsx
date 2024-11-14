@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   const storedUser = localStorage.getItem("loggedUser");
   const user: signupData | null = storedUser ? JSON.parse(storedUser) : null;
   const [formData, setFormData] = useState<Tasks>({
-    id: Date.now(),
+    id: Math.random() - 0.5,
     userId: user ? user.userId : 0,
     task: "",
     description: "",
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
     localStorage.setItem("tasks", JSON.stringify(tasksFromStorage));
     setTasks(tasksFromStorage);
     setFormData({
-      id: Date.now(),
+      id: Math.random() - 0.5,
       userId: user ? user.userId : 0,
       task: "",
       description: "",
