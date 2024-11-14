@@ -1,5 +1,4 @@
-import { signupData } from "./typesAndInterfaces";
-
+import { signupData, Tasks } from "./typesAndInterfaces";
 
 export const validateUserInput = ({
   username,
@@ -29,4 +28,20 @@ export const validateUserInput = ({
     errors.push("Password must be at least 8 characters long.");
 
   return errors;
+};
+
+export const handleCheckboxChange = (
+  id: number | undefined,
+  event: React.ChangeEvent<HTMLInputElement>,
+  setTasks
+) => {
+  const storedTasks = localStorage.getItem("tasks");
+  const tasksFromStorage: Tasks[] = storedTasks ? JSON.parse(storedTasks) : [];
+  const updatedTasks = tasksFromStorage.map((item) =>
+    item.id === id
+      ? { ...item, status: event.target.checked ? "completed" : "pending" }
+      : item
+  );
+  localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  setTasks(updatedTasks);
 };
