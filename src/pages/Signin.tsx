@@ -55,15 +55,13 @@ const Signin: React.FC = () => {
       navigate("/home");
     } else {
       setError("Incorrect Email or Password");
-      console.log("unautherized login");
       setFormData({
         email: "",
         password: "",
       });
-      return;
+      return false;
     }
   };
-  console.log(formData);
   return (
     <>
       <h1 className="text-4xl font-semibold mt-10 text-center text-gray-700">

@@ -8,7 +8,7 @@ export interface signupData {
   userId: number;
   username: string;
   email: string;
-  phone: number;
+  phone: string;
   confirmPass: string;
   password: string;
 }
@@ -17,10 +17,10 @@ const Signup: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<signupData>({
-    userId: Date.now(),
+    userId: Math.random() - 0.5,
     username: "",
     email: "",
-    phone: 0,
+    phone: "",
     confirmPass: "",
     password: "",
   });
