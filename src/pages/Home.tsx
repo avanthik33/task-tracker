@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import Error from "../components/Error";
-import { signupData } from "./Signup";
+import { signupData } from "../typesAndInterfaces";
 import useTimeInterval from "../hooks/useTimeInterval";
-
-export type Tasks = {
-  id: number;
-  userId: number;
-  task: string;
-  description: string;
-  time: string;
-  status: string;
-};
+import { Tasks } from "../typesAndInterfaces";
 
 const Home: React.FC = () => {
   console.log("<HOME>");

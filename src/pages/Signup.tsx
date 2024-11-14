@@ -3,15 +3,7 @@ import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { validateUserInput } from "../utils";
-
-export interface signupData {
-  userId: number;
-  username: string;
-  email: string;
-  phone: string;
-  confirmPass: string;
-  password: string;
-}
+import { signupData } from "../typesAndInterfaces";
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();

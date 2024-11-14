@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Tasks } from "./Home";
-import { signupData } from "./Signup";
+import { Tasks } from "../typesAndInterfaces";
+import { signupData } from "../typesAndInterfaces";
 import useTimeInterval from "../hooks/useTimeInterval";
-
 
 const TimoutTasks: React.FC = () => {
   console.log("<CompletedTasks>");

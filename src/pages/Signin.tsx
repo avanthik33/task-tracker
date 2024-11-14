@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import Error from "../components/Error";
 import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-
-export interface inputState {
-  email: string;
-  password: string;
-}
+import { inputState } from "../typesAndInterfaces";
 
 const Signin: React.FC = () => {
   const [formData, setFormData] = useState<inputState>({

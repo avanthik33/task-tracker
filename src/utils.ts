@@ -1,4 +1,5 @@
-import { signupData } from "./pages/Signup";
+import { signupData } from "./typesAndInterfaces";
+
 
 export const validateUserInput = ({
   username,
