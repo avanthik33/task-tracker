@@ -126,7 +126,7 @@ const Home: React.FC = () => {
 
       <div className="flex justify-center items-center mt-10">
         <h1 className="text-4xl font-semibold text-gray-800">
-          Hei{" " + user?.username + "  "}Add a Task
+          Hei{" " + user?.username.toUpperCase() + "  "}Add a Task
         </h1>
       </div>
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
