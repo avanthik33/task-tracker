@@ -58,40 +58,36 @@ const CompletedTasks: React.FC = () => {
           Completed Tasks
         </h1>
         <div className="space-y-6">
-          {tasks
-            .filter((item) => item.status === "completed")
-            .map((value) => (
-              <div
-                key={value.id}
-                className="bg-white p-5 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-300"
-              >
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {value.task.toUpperCase()}
-                </h2>
-                <p className="text-sm text-gray-600 mb-3">
-                  {value.description}
-                </p>
-                <p className="text-sm text-gray-500 mb-4">
-                  Due: {new Date(value.time).toLocaleString()}
-                </p>
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    name={`status-${value.id}`}
-                    id={`status-${value.id}`}
-                    checked={value.status === "completed"}
-                    onChange={(event) => handleChange(event, value.id)}
-                    className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
-                  />
-                  <label
-                    htmlFor={`status-${value.id}`}
-                    className="text-sm text-gray-700"
-                  >
-                    Uncheck here
-                  </label>
-                </div>
+          {tasks.map((value) => (
+            <div
+              key={value.id}
+              className="bg-white p-5 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-300"
+            >
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                {value.task.toUpperCase()}
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">{value.description}</p>
+              <p className="text-sm text-gray-500 mb-4">
+                Due: {new Date(value.time).toLocaleString()}
+              </p>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  name={`status-${value.id}`}
+                  id={`status-${value.id}`}
+                  checked={value.status === "completed"}
+                  onChange={(event) => handleChange(event, value.id)}
+                  className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
+                />
+                <label
+                  htmlFor={`status-${value.id}`}
+                  className="text-sm text-gray-700"
+                >
+                  Uncheck here
+                </label>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
     </>
