@@ -17,21 +17,25 @@ const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrTime(new Date());
-    }, 3000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    const updatedTasks = tasks.map((item) =>
-      new Date(item.time) < currTime && item.status === "pending"
-        ? { ...item, status: "timeout" }
-        : item
-    );
-    if (JSON.stringify(updatedTasks) !== JSON.stringify(tasks)) {
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-      setTasks(updatedTasks);
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks) {
+      const tasks: Tasks[] = JSON.parse(storedTasks);
+      const updatedTasks = tasks.map((item) =>
+        new Date(item.time) < currTime && item.status === "pending"
+          ? { ...item, status: "timeout" }
+          : item
+      );
+      if (JSON.stringify(updatedTasks) !== JSON.stringify(tasks)) {
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        setTasks(updatedTasks);
+      }
     }
-  }, [currTime, tasks]);
+  }, [currTime]);
 
   return { tasks };
 };
