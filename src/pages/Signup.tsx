@@ -46,16 +46,7 @@ const Signup: React.FC = () => {
 
   const handleSubmitForm = (event: React.FormEvent) => {
     event.preventDefault();
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.confirmPass ||
-      !formData.password
-    ) {
-      setError("fill all inputs!");
-      return false;
-    } else if (formData.password !== formData.confirmPass) {
+    if (formData.password !== formData.confirmPass) {
       setError("password and confirm password in not match!");
       return false;
     }
@@ -138,7 +129,7 @@ const Signup: React.FC = () => {
             </label>
             <input
               required
-              type="number"
+              type="text"
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}

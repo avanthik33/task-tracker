@@ -15,9 +15,13 @@ export const validateUserInput = ({
   if (!email) errors.push("Email is required.");
   else if (!/\S+@\S+\.\S+/.test(email)) errors.push("Invalid email format.");
 
-  if (!phone) errors.push("Phone number is required.");
-  else if (phone.length < 10)
+  if (!phone) {
+    errors.push("Phone number is required.");
+  } else if (!/^\d+$/.test(phone)) {
+    errors.push("Phone number must only contain digits.");
+  } else if (phone.length < 10) {
     errors.push("Phone number must be at least 10 digits long.");
+  }
 
   if (!password) errors.push("Password is required.");
   else if (password.length < 8)

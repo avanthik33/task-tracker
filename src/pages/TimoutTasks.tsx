@@ -3,7 +3,6 @@ import { Tasks } from "./Home";
 import { signupData } from "./Signup";
 import useTimeInterval from "../hooks/useTimeInterval";
 
-/// a mistake in time out when submitting and handle change is not a problem but when sometime after it will be removed from the localstorage
 
 const TimoutTasks: React.FC = () => {
   console.log("<CompletedTasks>");
