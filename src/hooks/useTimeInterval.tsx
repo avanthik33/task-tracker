@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { Tasks } from "../pages/Home";
-
-interface UseTimeIntervalProps {
-  task: Tasks[];
-}
+import { UseTimeIntervalProps } from "../typesAndInterfaces";
+import { Tasks } from "../typesAndInterfaces";
 
 const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
   console.log("<UseTimeInterval>");

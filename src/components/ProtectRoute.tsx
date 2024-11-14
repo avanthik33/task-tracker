@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface ProtectRouteProps {
-  children: React.ReactNode;
-}
+import { ProtectRouteProps } from "../typesAndInterfaces";
 
 export const ProtectRoute: React.FC<ProtectRouteProps> = ({ children }) => {
   const navigate = useNavigate();
