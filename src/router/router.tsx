@@ -8,15 +8,24 @@ import CompletedTasks from "../pages/CompletedTasks";
 import TimoutTasks from "../pages/TimoutTasks";
 import Fallback from "../components/Fallback";
 import { ProtectRoute } from "../components/ProtectRoute";
+import RedirectIfAuthenticated from "../components/AuthenticatedREdirect";
 
 export const router = createBrowserRouter([
   {
     index: true,
-    element: <Signup />,
+    element: (
+      <RedirectIfAuthenticated>
+        <Signup />
+      </RedirectIfAuthenticated>
+    ),
   },
   {
     path: "signin",
-    element: <Signin />,
+    element: (
+      <RedirectIfAuthenticated>
+        <Signin />
+      </RedirectIfAuthenticated>
+    ),
   },
   {
     path: "home",

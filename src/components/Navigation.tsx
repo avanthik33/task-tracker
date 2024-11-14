@@ -6,7 +6,7 @@ const Navigation: React.FC = () => {
   const handleLogout = () => {
     console.log("clicked logout");
     localStorage.removeItem("loggedUser");
-    navigate("/");
+    navigate("/signin");
   };
   return (
     <>

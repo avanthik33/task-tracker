@@ -3,6 +3,8 @@ import { Tasks } from "./Home";
 import { signupData } from "./Signup";
 import useTimeInterval from "../hooks/useTimeInterval";
 
+/// a mistake in time out when submitting and handle change is not a problem but when sometime after it will be removed from the localstorage
+
 const TimoutTasks: React.FC = () => {
   console.log("<CompletedTasks>");
   const storedUser = localStorage.getItem("loggedUser");
@@ -50,24 +52,20 @@ const TimoutTasks: React.FC = () => {
           Timeout tasks
         </h1>
         <div className="space-y-6">
-          {tasks
-            .filter((item) => item.status === "timeout")
-            .map((value) => (
-              <div
-                key={value.id}
-                className="bg-white p-5 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-300"
-              >
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {value.task.toUpperCase()}
-                </h2>
-                <p className="text-sm text-gray-600 mb-3">
-                  {value.description}
-                </p>
-                <p className="text-sm text-gray-500 mb-4">
-                  Due: {new Date(value.time).toLocaleString()}
-                </p>
-              </div>
-            ))}
+          {tasks.map((value) => (
+            <div
+              key={value.id}
+              className="bg-white p-5 rounded-lg shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-300"
+            >
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                {value.task.toUpperCase()}
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">{value.description}</p>
+              <p className="text-sm text-gray-500 mb-4">
+                Due: {new Date(value.time).toLocaleString()}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </>
