@@ -122,6 +122,7 @@ const Signup: React.FC = () => {
             <input
               required
               type="text"
+              pattern="^\+?[1-9][0-9]{1,14}$"
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
