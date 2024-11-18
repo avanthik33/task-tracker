@@ -226,14 +226,11 @@ describe("Home component", () => {
       "task-checkbox-status--0.1700944822244761"
     );
     expect(task1Status).toHaveTextContent(/completed/i);
-
     const task1Checkbox = screen.getByTestId(
       "task-checkbox--0.1700944822244761"
     );
     expect(task1Checkbox).toBeChecked();
-
     fireEvent.click(task1Checkbox);
-
     await waitFor(() => {
       expect(task1Status).toHaveTextContent(/pending/i);
       expect(task1Checkbox).not.toBeChecked();
@@ -244,14 +241,11 @@ describe("Home component", () => {
       "task-checkbox-status--0.1700944822244762"
     );
     expect(task2Status).toHaveTextContent(/pending/i);
-
     const task2Checkbox = screen.getByTestId(
       "task-checkbox--0.1700944822244762"
     );
     expect(task2Checkbox).not.toBeChecked();
-
     fireEvent.click(task2Checkbox);
-
     await waitFor(() => {
       expect(task2Status).toHaveTextContent(/completed/i);
       expect(task2Checkbox).toBeChecked();
