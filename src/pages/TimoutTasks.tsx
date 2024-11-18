@@ -43,6 +43,16 @@ const TimoutTasks: React.FC = () => {
     );
   }
 
+  if (tasks.length === 0) {
+    return (
+      <>
+        <h1 className="text-3xl font-bold mt-5 text-gray-800 mb-6 text-center">
+          NO timeout Tasks
+        </h1>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="max-w-2xl mx-auto mt-10 px-4 py-6">
