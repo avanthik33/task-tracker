@@ -195,7 +195,7 @@ describe("Home component", () => {
         {
           description: "project 1 description",
           id: -0.1700944822244761,
-          status: "pending",
+          status: "completed",
           task: "task1",
           time: "2024-11-19T10:14",
           userId: 1731558110081,
@@ -203,45 +203,68 @@ describe("Home component", () => {
         {
           description: "project 2 description",
           id: -0.1700944822244762,
-          status: "completed",
+          status: "pending",
           task: "task2",
-          time: "2024-11-19T10:14",
+          time: "2024-11-20T10:14",
+          userId: 1731558110081,
+        },
+        {
+          description: "project 3 description",
+          id: -0.1700944822244763,
+          status: "timeout",
+          task: "task3",
+          time: "2024-11-17T10:14",
           userId: 1731558110081,
         },
       ])
     );
 
     render(<Home />);
-    screen.debug();
 
-    const task1Status = screen.getByText(/pending/i);
-    expect(task1Status).toBeInTheDocument();
+    // task 1
+    const task1Status = screen.getByTestId(
+      "task-checkbox-status--0.1700944822244761"
+    );
+    expect(task1Status).toHaveTextContent(/completed/i);
 
-    const task2Status = screen.getByText(/completed/i);
-    expect(task2Status).toBeInTheDocument();
-
-    //task 1
     const task1Checkbox = screen.getByTestId(
       "task-checkbox--0.1700944822244761"
     );
-    expect(task1Checkbox).not.toBeChecked();
+    expect(task1Checkbox).toBeChecked();
+
     fireEvent.click(task1Checkbox);
+
     await waitFor(() => {
-      expect(
-        screen.getByTestId("task-checkbox-status--0.1700944822244761")
-      ).toBeInTheDocument();
-      expect(task1Checkbox).toBeChecked();
+      expect(task1Status).toHaveTextContent(/pending/i);
+      expect(task1Checkbox).not.toBeChecked();
     });
-    //task2
+
+    // task 2
+    const task2Status = screen.getByTestId(
+      "task-checkbox-status--0.1700944822244762"
+    );
+    expect(task2Status).toHaveTextContent(/pending/i);
+
     const task2Checkbox = screen.getByTestId(
       "task-checkbox--0.1700944822244762"
     );
-    expect(task2Checkbox).toBeChecked();
+    expect(task2Checkbox).not.toBeChecked();
+
+    fireEvent.click(task2Checkbox);
+
     await waitFor(() => {
-      expect(
-        screen.getByTestId("task-checkbox-status--0.1700944822244762")
-      ).toBeInTheDocument();
-      expect(task1Checkbox).toBeChecked();
+      expect(task2Status).toHaveTextContent(/completed/i);
+      expect(task2Checkbox).toBeChecked();
     });
+
+    //task3
+    const task3Status = screen.getByTestId(
+      "task-checkbox-status--0.1700944822244763"
+    );
+    expect(task3Status).toHaveTextContent(/timeout/i);
+    const task3Checkbox = screen.queryByTestId(
+      "task-checkbox--0.1700944822244763"
+    );
+    expect(task3Checkbox).toBeNull();
   });
 });

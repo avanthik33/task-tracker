@@ -210,9 +210,7 @@ const Home: React.FC = () => {
                       {value.status}
                     </span>
 
-                    {value.status === "timeout" ? (
-                      <span className="ml-4"></span>
-                    ) : (
+                    {value.status !== "timeout" && (
                       <span className="ml-4">
                         <input
                           type="checkbox"
