@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import Home from "./Home";
 import "@testing-library/jest-dom";
@@ -153,5 +153,95 @@ describe("Home component", () => {
 
     const taskName5 = screen.getByText(/task5/i);
     expect(taskName5).toBeInTheDocument();
+  });
+
+  it("should show the error message 'fill all the input fileds' when no input submit", () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+    render(<Home />);
+
+    const submitButton = screen.getByRole("button", { name: /add task/i });
+    fireEvent.click(submitButton);
+
+    const errorMessage = screen.getByText(/fill all the input fields!/i);
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  it("should change status when clicking checkbox", async () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify([
+        {
+          description: "project 1 description",
+          id: -0.1700944822244761,
+          status: "pending",
+          task: "task1",
+          time: "2024-11-19T10:14",
+          userId: 1731558110081,
+        },
+        {
+          description: "project 2 description",
+          id: -0.1700944822244762,
+          status: "completed",
+          task: "task2",
+          time: "2024-11-19T10:14",
+          userId: 1731558110081,
+        },
+      ])
+    );
+
+    render(<Home />);
+    screen.debug();
+
+    const task1Status = screen.getByText(/pending/i);
+    expect(task1Status).toBeInTheDocument();
+
+    const task2Status = screen.getByText(/completed/i);
+    expect(task2Status).toBeInTheDocument();
+
+    //task 1
+    const task1Checkbox = screen.getByTestId(
+      "task-checkbox--0.1700944822244761"
+    );
+    expect(task1Checkbox).not.toBeChecked();
+    fireEvent.click(task1Checkbox);
+    await waitFor(() => {
+      expect(
+        screen.getByTestId("task-checkbox-status--0.1700944822244761")
+      ).toBeInTheDocument();
+      expect(task1Checkbox).toBeChecked();
+    });
+    //task2
+    const task2Checkbox = screen.getByTestId(
+      "task-checkbox--0.1700944822244762"
+    );
+    expect(task2Checkbox).toBeChecked();
+    await waitFor(() => {
+      expect(
+        screen.getByTestId("task-checkbox-status--0.1700944822244762")
+      ).toBeInTheDocument();
+      expect(task1Checkbox).toBeChecked();
+    });
   });
 });

@@ -203,7 +203,10 @@ const Home: React.FC = () => {
                       {value.task}
                     </span>
 
-                    <span className="ml-4 text-sm text-gray-500">
+                    <span
+                      className="ml-4 text-sm text-gray-500"
+                      data-testid={`task-checkbox-status-${value.id}`}
+                    >
                       {value.status}
                     </span>
 
@@ -215,6 +218,7 @@ const Home: React.FC = () => {
                           type="checkbox"
                           name={`status-${value.id}`}
                           id={`status-${value.id}`}
+                          data-testid={`task-checkbox-${value.id}`}
                           checked={value.status === "completed"}
                           onChange={(event) => handleChange(event, value.id)}
                           className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
