@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Tasks } from "../typesAndInterfaces";
 import { signupData } from "../typesAndInterfaces";
 import useTimeInterval from "../hooks/useTimeInterval";
@@ -52,7 +52,7 @@ const CompletedTasks: React.FC = () => {
     );
   }
   return (
-    <>
+    <Fragment>
       <div className="max-w-2xl mx-auto mt-10 px-4 py-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Completed Tasks
@@ -90,7 +90,7 @@ const CompletedTasks: React.FC = () => {
           ))}
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 
