@@ -1,37 +1,20 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import CompletedTasks from "./CompletedTasks";
 import { beforeEach, describe, expect, it } from "vitest";
+import PendingTasks from "./PendingTasks";
 import "@testing-library/jest-dom";
 
-describe("CompletedTask component", () => {
+describe("PendingTask component", () => {
   beforeEach(() => {
     localStorage.clear();
   });
-  it("should show the 'completed tasks' heading when a user is logged in", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
-    render(<CompletedTasks />);
-    const heading = screen.getByText(/completed tasks/i, { exact: false });
-    expect(heading).toBeInTheDocument();
-  });
-
-  it("should show the 'no logged user found' heading when no user is logged in", () => {
+  it("should display 'No loggedUser found!' when there is no user", () => {
     localStorage.removeItem("loggedUser");
-    render(<CompletedTasks />);
-    const heading = screen.getByText(/no loggeduser found!/i);
+    render(<PendingTasks />);
+    const heading = screen.getByText(/No loggedUser found!/i);
     expect(heading).toBeInTheDocument();
   });
 
-  it("should show 'no completed tasks' when there are no completed tasks", () => {
+  it("should display the 'pending task' heading when a user is loggedIn", () => {
     localStorage.setItem(
       "loggedUser",
       JSON.stringify({
@@ -43,13 +26,30 @@ describe("CompletedTask component", () => {
         username: "user 1",
       })
     );
+
+    render(<PendingTasks />);
+    expect(screen.getByText(/pending tasks/i)).toBeInTheDocument();
+  });
+
+  it("should display no pending task when there is no pending tasks", () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+
     localStorage.setItem("tasks", JSON.stringify([]));
-    render(<CompletedTasks />);
-    const heading = screen.getByText(/NO Completed Tasks/i);
-    expect(heading).toBeInTheDocument();
+    render(<PendingTasks />);
+    expect(screen.getByText(/no pending task/i)).toBeInTheDocument();
   });
 
-  it("should show the completed tasks", () => {
+  it("should display the pending tasks when there is pending tasks", () => {
     localStorage.setItem(
       "loggedUser",
       JSON.stringify({
@@ -61,6 +61,7 @@ describe("CompletedTask component", () => {
         username: "user 1",
       })
     );
+
     localStorage.setItem(
       "tasks",
       JSON.stringify([
@@ -73,6 +74,14 @@ describe("CompletedTask component", () => {
           userId: 1731558110081,
         },
         {
+          description: "project 2 description",
+          id: -0.1700944822244763,
+          status: "pending",
+          task: "task2",
+          time: "2024-11-19T10:14",
+          userId: 1731558110081,
+        },
+        {
           description: "project 3 description",
           id: -0.1700944822244762,
           status: "timeout",
@@ -80,25 +89,14 @@ describe("CompletedTask component", () => {
           time: "2024-11-18T10:14",
           userId: 1731558110081,
         },
-        {
-          description: "project 2 description",
-          id: -0.1700944822244763,
-          status: "pending",
-          task: "task2",
-          time: "2024-11-18T10:14",
-          userId: 1731558110081,
-        },
       ])
     );
-    render(<CompletedTasks />);
-    const task1 = screen.getByText(/task1/i);
-    expect(task1).toBeInTheDocument();
 
-    const task2 = screen.queryByText(/task2/i);
-    expect(task2).not.toBeInTheDocument();
+    render(<PendingTasks />);
 
-    const task3 = screen.queryByText(/task3/i);
-    expect(task3).not.toBeInTheDocument();
+    expect(screen.queryByText(/task2/i)).toBeInTheDocument();
+    expect(screen.queryByText(/task1/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/task3/i)).not.toBeInTheDocument();
   });
 
   it("should handle the checkbox changes", async () => {
@@ -122,38 +120,36 @@ describe("CompletedTask component", () => {
           id: -0.1700944822244761,
           status: "completed",
           task: "task1",
-          time: "2024-11-19T10:14",
+          time: "2024-11-18T10:14",
           userId: 1731558110081,
         },
         {
           description: "project 2 description",
-          id: -0.1700944822244762,
+          id: -0.1700944822244763,
           status: "pending",
           task: "task2",
-          time: "2024-11-20T10:14",
+          time: "2024-11-19T10:14",
           userId: 1731558110081,
         },
         {
           description: "project 3 description",
-          id: -0.1700944822244763,
+          id: -0.1700944822244762,
           status: "timeout",
           task: "task3",
-          time: "2024-11-17T10:14",
+          time: "2024-11-18T10:14",
           userId: 1731558110081,
         },
       ])
     );
 
-    render(<CompletedTasks />);
-    screen.debug();
+    render(<PendingTasks />);
+    const pendingTask = screen.getByTestId("test-id--0.1700944822244763");
+    expect(pendingTask).toBeInTheDocument();
+    expect(pendingTask).not.toBeChecked();
 
-    const taskCheckbox = screen.getByTestId("data-test--0.1700944822244761");
-    expect(taskCheckbox).toBeChecked();
-    expect(taskCheckbox).toBeInTheDocument();
-
-    fireEvent.click(taskCheckbox);
+    fireEvent.click(pendingTask);
     await waitFor(() => {
-      expect(taskCheckbox).not.toBeInTheDocument();
+      expect(pendingTask).not.toBeInTheDocument();
     });
   });
 });

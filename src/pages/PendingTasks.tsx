@@ -51,6 +51,15 @@ const PendingTasks: React.FC = () => {
       </>
     );
   }
+  if (tasks.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <h2 className="text-2xl font-semibold text-gray-700">
+          No Pending Tasks
+        </h2>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -77,6 +86,7 @@ const PendingTasks: React.FC = () => {
                   name={`status-${value.id}`}
                   id={`status-${value.id}`}
                   checked={value.status === "completed"}
+                  data-testid={`test-id-${value.id}`}
                   onChange={(event) => handleChange(event, value.id)}
                   className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
                 />

@@ -56,7 +56,7 @@ const CompletedTasks: React.FC = () => {
       <>
         <h1 className="text-3xl font-bold mt-5 text-gray-800 mb-6 text-center">
           NO Completed Tasks
-        </h1>
+        </h1> 
       </>
     );
   }
@@ -84,6 +84,7 @@ const CompletedTasks: React.FC = () => {
                   type="checkbox"
                   name={`status-${value.id}`}
                   id={`status-${value.id}`}
+                  data-testid={`data-test-${value.id}`}
                   checked={value.status === "completed"}
                   onChange={(event) => handleChange(event, value.id)}
                   className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
