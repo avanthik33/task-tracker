@@ -3,7 +3,7 @@ import CompletedTasks from "./CompletedTasks";
 import { beforeEach, describe, expect, it } from "vitest";
 import "@testing-library/jest-dom";
 
-describe("Completed task component", () => {
+describe("CompletedTask component", () => {
   beforeEach(() => {
     localStorage.clear();
   });
