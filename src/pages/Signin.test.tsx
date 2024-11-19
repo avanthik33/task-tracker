@@ -76,4 +76,15 @@ describe("Signin Component", () => {
     await userEvent.type(inputEmail, "avanthk@gmail.com");
     expect(inputEmail).toHaveValue();
   });
+
+  it("should check if the error message fades away after 3sec", async () => {
+    renderSignin();
+    screen.debug();
+    fireEvent.submit(screen.getByRole("form"));
+    await waitFor(() => {
+      expect(screen.getByTestId("error-heading")).toBeInTheDocument();
+    });
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    expect(screen.queryByTestId("error-heading")).not.toBeInTheDocument();
+  });
 });
