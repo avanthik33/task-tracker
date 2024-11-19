@@ -75,7 +75,7 @@ const Signup: React.FC = () => {
       )}
 
       <div className="max-w-md mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-        <form onSubmit={handleSubmitForm}>
+        <form role="form" onSubmit={handleSubmitForm}>
           <div className="mb-4">
             <label
               htmlFor="username"
