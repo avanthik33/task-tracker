@@ -8,6 +8,19 @@ describe("Home component", () => {
     localStorage.clear();
   });
 
+  const signin = () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+  };
   it("should show 'No loggedUser found!' when there is no user logged", () => {
     localStorage.removeItem("loggedUser");
     render(<Home />);
@@ -16,17 +29,7 @@ describe("Home component", () => {
   });
 
   it("should show the heading with greetings 'hey username add a task'", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     render(<Home />);
     const heading = screen.getByText(new RegExp(`hei user 1 add a task`, "i"));
@@ -34,17 +37,7 @@ describe("Home component", () => {
   });
 
   it("should show the container for adding task when a user is logged in", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     render(<Home />);
     const formTask = screen.getByLabelText(/task/i);
     expect(formTask).toBeInTheDocument();
@@ -60,17 +53,7 @@ describe("Home component", () => {
   });
 
   it("should show 'No recent tasks, add a new one' when there is no tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<Home />);
     const heading = screen.getByText(/No recent tasks, add a new one/i);
@@ -78,17 +61,7 @@ describe("Home component", () => {
   });
 
   it("should show the recent 4 tasks when there is tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     localStorage.setItem(
       "tasks",
       JSON.stringify([
@@ -156,17 +129,7 @@ describe("Home component", () => {
   });
 
   it("should show the error message 'fill all the input fileds' when no input submit", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     render(<Home />);
 
     const submitButton = screen.getByRole("button", { name: /add task/i });
@@ -177,17 +140,7 @@ describe("Home component", () => {
   });
 
   it("should change status when clicking checkbox", async () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem(
       "tasks",

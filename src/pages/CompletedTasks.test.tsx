@@ -4,10 +4,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import "@testing-library/jest-dom";
 
 describe("CompletedTask component", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-  it("should show the 'completed tasks' heading when a user is logged in", () => {
+  const signin = () => {
     localStorage.setItem(
       "loggedUser",
       JSON.stringify({
@@ -19,6 +16,12 @@ describe("CompletedTask component", () => {
         username: "user 1",
       })
     );
+  };
+  beforeEach(() => {
+    localStorage.clear();
+  });
+  it("should show the 'completed tasks' heading when a user is logged in", () => {
+    signin();
     render(<CompletedTasks />);
     const heading = screen.getByText(/completed tasks/i, { exact: false });
     expect(heading).toBeInTheDocument();
@@ -32,17 +35,7 @@ describe("CompletedTask component", () => {
   });
 
   it("should show 'no completed tasks' when there are no completed tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<CompletedTasks />);
     const heading = screen.getByText(/NO Completed Tasks/i);
@@ -50,17 +43,7 @@ describe("CompletedTask component", () => {
   });
 
   it("should show the completed tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     localStorage.setItem(
       "tasks",
       JSON.stringify([
@@ -102,17 +85,7 @@ describe("CompletedTask component", () => {
   });
 
   it("should handle the checkbox changes", async () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem(
       "tasks",
