@@ -4,7 +4,7 @@ import { errorMessage } from "../typesAndInterfaces";
 const Error: React.FC<errorMessage> = ({ message }) => {
   return (
     <div>
-      <h1>{message}</h1>
+      <h1 data-testid={"error-heading"}>{message}</h1>
     </div>
   );
 };
