@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import Signup from "./Signup";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
 describe("Signup component", () => {
   const renderSignup = () => {
@@ -12,6 +13,7 @@ describe("Signup component", () => {
       </BrowserRouter>
     );
   };
+
   it("should display 'signup' at the top", () => {
     renderSignup();
     expect(screen.getByText(/signup/i)).toBeInTheDocument();
@@ -68,7 +70,6 @@ describe("Signup component", () => {
 
   it("should display error messages when input fields are missing", async () => {
     renderSignup();
-    screen.debug();
 
     fireEvent.submit(screen.getByRole("form"));
     await waitFor(() => {
@@ -98,11 +99,32 @@ describe("Signup component", () => {
     await waitFor(() => {
       expect(screen.getByText(/Password is required./i)).toBeInTheDocument();
     });
-    fireEvent.change(screen.getByLabelText(/phone/i), {
+    fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "avanthik123" },
     });
     fireEvent.submit(screen.getByRole("form"));
   });
 
-  
+  it("should check the input filed value when the user types", async () => {
+    userEvent.setup();
+    renderSignup();
+    const inputEmail = screen.getByRole("textbox", { name: "Email" });
+    await userEvent.type(inputEmail, "avanthik@gmail.com");
+    expect(inputEmail).toHaveValue("avanthik@gmail.com");
+  });
+
+  it("should check if the error message fades away after 3sec", async () => {
+    renderSignup();
+    screen.debug();
+    fireEvent.submit(screen.getByRole("form"));
+    await waitFor(() => {
+      expect(screen.getByTestId("error-heading")).toBeInTheDocument();
+    });
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    expect(screen.queryByTestId("error-heading")).not.toBeInTheDocument();
+  });
+
+  it("should show the loading icon when loading state is true",()=>{
+    
+  });
 });
