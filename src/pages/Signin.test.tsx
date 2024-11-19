@@ -4,6 +4,7 @@ import Signin from "./Signin";
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 describe("Signin Component", () => {
   const renderSignin = () => {
@@ -66,5 +67,13 @@ describe("Signin Component", () => {
       expect(screen.getByLabelText("Email")).toHaveTextContent("");
       expect(screen.getByLabelText("Password")).toHaveTextContent("");
     });
+  });
+
+  it("should check the input filed value when the user types", async () => {
+    userEvent.setup();
+    renderSignin();
+    const inputEmail = screen.getByRole("textbox");
+    await userEvent.type(inputEmail, "avanthk@gmail.com");
+    expect(inputEmail).toHaveValue();
   });
 });
