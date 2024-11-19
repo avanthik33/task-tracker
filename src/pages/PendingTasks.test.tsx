@@ -4,6 +4,19 @@ import PendingTasks from "./PendingTasks";
 import "@testing-library/jest-dom";
 
 describe("PendingTask component", () => {
+  const signin = () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+  };
   beforeEach(() => {
     localStorage.clear();
   });
@@ -15,34 +28,14 @@ describe("PendingTask component", () => {
   });
 
   it("should display the 'pending task' heading when a user is loggedIn", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     render(<PendingTasks />);
     expect(screen.getByText(/pending tasks/i)).toBeInTheDocument();
   });
 
   it("should display no pending task when there is no pending tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<PendingTasks />);
@@ -50,17 +43,7 @@ describe("PendingTask component", () => {
   });
 
   it("should display the pending tasks when there is pending tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem(
       "tasks",
@@ -100,17 +83,7 @@ describe("PendingTask component", () => {
   });
 
   it("should handle the checkbox changes", async () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem(
       "tasks",

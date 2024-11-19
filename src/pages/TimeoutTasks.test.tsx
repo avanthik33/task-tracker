@@ -7,6 +7,20 @@ describe("TimoutTasks component", () => {
   beforeEach(() => {
     localStorage.clear();
   });
+
+  const signin = () => {
+    localStorage.setItem(
+      "loggedUser",
+      JSON.stringify({
+        confirmPass: "avanthik",
+        email: "user1@gmail.com",
+        password: "avanthik",
+        phone: "00000000000",
+        userId: 1731558110081,
+        username: "user 1",
+      })
+    );
+  };
   it("should display 'no loggedUser found!' when there is not loggedUser", () => {
     localStorage.removeItem("loggedUser");
     render(<TimoutTasks />);
@@ -14,33 +28,13 @@ describe("TimoutTasks component", () => {
   });
 
   it("should display timeout tasks when the page loads", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
     render(<TimoutTasks />);
     expect(screen.getByText(/timeout tasks/i)).toBeInTheDocument();
   });
 
   it("should display 'no timeout tasks' when there is not timeout tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<TimoutTasks />);
@@ -48,17 +42,7 @@ describe("TimoutTasks component", () => {
   });
 
   it("should display all the timeout tasks", () => {
-    localStorage.setItem(
-      "loggedUser",
-      JSON.stringify({
-        confirmPass: "avanthik",
-        email: "user1@gmail.com",
-        password: "avanthik",
-        phone: "00000000000",
-        userId: 1731558110081,
-        username: "user 1",
-      })
-    );
+    signin();
 
     localStorage.setItem(
       "tasks",
