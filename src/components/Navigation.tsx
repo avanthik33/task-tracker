@@ -66,7 +66,6 @@ const Navigation: React.FC = () => {
         </li>
       </ul>
 
-      {/* Logout Button */}
       <div className="ml-auto">
         <button
           className="text-red-900 bg-red-100 font-semibold text-lg hover:bg-white hover:text-red-800 px-4 py-1 rounded-sm transition duration-200 ease-in-out transform"
