@@ -4,6 +4,8 @@ import { signupData } from "../typesAndInterfaces";
 import useTimeInterval from "../hooks/useTimeInterval";
 import { Tasks } from "../typesAndInterfaces";
 import { handleCheckboxChange } from "../utils";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Home: React.FC = () => {
   console.log("<HOME>");
@@ -93,6 +95,11 @@ const Home: React.FC = () => {
     }));
   };
 
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
+
   if (!user) {
     return (
       <>
@@ -118,7 +125,12 @@ const Home: React.FC = () => {
           Hei{" " + user?.username.toUpperCase() + "  "}Add a Task
         </h1>
       </div>
-      <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
+      <div
+        data-aos="zoom-in"
+        data-aos-delay="200"
+        data-aos-duration="500"
+        className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg"
+      >
         <form onSubmit={handleSumbitForm} className="space-y-4">
           <div className="">
             <label
@@ -185,7 +197,11 @@ const Home: React.FC = () => {
           No recent tasks, add a new one
         </h1>
       ) : (
-        <div className="max-w-2xl mx-auto mt-8">
+        <div
+        data-aos="zoom-in"
+        data-aos-delay="200"
+        data-aso-duration="500"
+        className="max-w-2xl mx-auto mt-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             Recent Tasks
           </h2>
