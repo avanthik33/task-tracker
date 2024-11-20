@@ -198,10 +198,11 @@ const Home: React.FC = () => {
         </h1>
       ) : (
         <div
-        data-aos="zoom-in"
-        data-aos-delay="200"
-        data-aso-duration="500"
-        className="max-w-2xl mx-auto mt-8">
+          data-aos="zoom-in"
+          data-aos-delay="200"
+          data-aso-duration="500"
+          className="max-w-2xl mx-auto mt-8"
+        >
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             Recent Tasks
           </h2>
