@@ -23,7 +23,9 @@ describe("Signin Component", () => {
   });
 
   it("should display signin lables", () => {
-    renderSignin();
+    render(<Signin />, {
+      wrapper: BrowserRouter,
+    });
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /signin/i })).toBeInTheDocument();
