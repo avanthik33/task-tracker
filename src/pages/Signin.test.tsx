@@ -7,19 +7,18 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe("Signin Component", () => {
+  //function for rendering the signin component
   const renderSignin = () => {
-    render(
-      <BrowserRouter>
-        <Signin />
-      </BrowserRouter>
-    );
+    render(<Signin />, { wrapper: BrowserRouter });
   };
   beforeEach(() => {
     localStorage.clear();
   });
   it("should display 'signin' heading", () => {
     renderSignin();
-    expect(screen.getByText("SignIn")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /signin/i })
+    ).toBeInTheDocument();
   });
 
   it("should display signin lables", () => {
