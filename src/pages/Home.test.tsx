@@ -2,12 +2,14 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import Home from "./Home";
 import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
 
 describe("Home component", () => {
   beforeEach(() => {
     localStorage.clear();
   });
 
+  //signin rendering function
   const signin = () => {
     localStorage.setItem(
       "loggedUser",
@@ -24,15 +26,18 @@ describe("Home component", () => {
   it("should show 'No loggedUser found!' when there is no user logged", () => {
     localStorage.removeItem("loggedUser");
     render(<Home />);
-    const heading = screen.getByText(/No loggedUser found!/i);
+    const heading = screen.getByRole("heading", {
+      name: /no loggeduser found/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 
   it("should show the heading with greetings 'hey username add a task'", () => {
     signin();
-
     render(<Home />);
-    const heading = screen.getByText(new RegExp(`hei user 1 add a task`, "i"));
+    const heading = screen.getByRole("heading", {
+      name: /hei user 1 add a task/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 
@@ -56,7 +61,7 @@ describe("Home component", () => {
     signin();
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<Home />);
-    const heading = screen.getByText(/No recent tasks, add a new one/i);
+    const heading = screen.getByRole("heading", { name: /no recent tasks/i });
     expect(heading).toBeInTheDocument();
   });
 
@@ -109,7 +114,7 @@ describe("Home component", () => {
     );
     render(<Home />);
 
-    const heading = screen.getByText(/Recent Tasks/i);
+    const heading = screen.getByRole("heading", { name: /recent tasks/i });
     expect(heading).toBeInTheDocument();
 
     const taskName1 = screen.queryByText(/task1/i);
@@ -128,12 +133,13 @@ describe("Home component", () => {
     expect(taskName5).toBeInTheDocument();
   });
 
-  it("should show the error message 'fill all the input fileds' when no input submit", () => {
+  it("should show the error message 'fill all the input fileds' when no input submit", async () => {
     signin();
+    userEvent.setup();
     render(<Home />);
 
     const submitButton = screen.getByRole("button", { name: /add task/i });
-    fireEvent.click(submitButton);
+    await userEvent.click(submitButton);
 
     const errorMessage = screen.getByText(/fill all the input fields!/i);
     expect(errorMessage).toBeInTheDocument();
