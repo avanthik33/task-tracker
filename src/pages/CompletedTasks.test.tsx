@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import CompletedTasks from "./CompletedTasks";
 import { beforeEach, describe, expect, it } from "vitest";
 import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
 
 describe("CompletedTask component", () => {
   //signin function
@@ -128,14 +129,12 @@ describe("CompletedTask component", () => {
 
     render(<CompletedTasks />);
     screen.debug();
-
+    userEvent.setup();
     const taskCheckbox = screen.getByTestId("data-test--0.1700944822244761");
     expect(taskCheckbox).toBeChecked();
     expect(taskCheckbox).toBeInTheDocument();
-
-    fireEvent.click(taskCheckbox);
-    await waitFor(() => {
-      expect(taskCheckbox).not.toBeInTheDocument();
-    });
+    
+    await userEvent.click(taskCheckbox);
+    expect(taskCheckbox).not.toBeInTheDocument();
   });
 });
