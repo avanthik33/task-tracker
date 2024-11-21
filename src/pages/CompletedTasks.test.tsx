@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import "@testing-library/jest-dom";
 
 describe("CompletedTask component", () => {
+  //signin function
   const signin = () => {
     localStorage.setItem(
       "loggedUser",
@@ -20,17 +21,20 @@ describe("CompletedTask component", () => {
   beforeEach(() => {
     localStorage.clear();
   });
+
   it("should show the 'completed tasks' heading when a user is logged in", () => {
     signin();
     render(<CompletedTasks />);
-    const heading = screen.getByText(/completed tasks/i, { exact: false });
+    const heading = screen.getByRole("heading", { name: /completed tasks/i });
     expect(heading).toBeInTheDocument();
   });
 
   it("should show the 'no logged user found' heading when no user is logged in", () => {
     localStorage.removeItem("loggedUser");
     render(<CompletedTasks />);
-    const heading = screen.getByText(/no loggeduser found!/i);
+    const heading = screen.getByRole("heading", {
+      name: /no loggeduser found!/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 
@@ -38,7 +42,9 @@ describe("CompletedTask component", () => {
     signin();
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<CompletedTasks />);
-    const heading = screen.getByText(/NO Completed Tasks/i);
+    const heading = screen.getByRole("heading", {
+      name: /No completed Tasks/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 
@@ -68,20 +74,23 @@ describe("CompletedTask component", () => {
           id: -0.1700944822244763,
           status: "pending",
           task: "task2",
-          time: "2024-11-18T10:14",
+          time: "2025-11-18T10:14",
           userId: 1731558110081,
         },
       ])
     );
     render(<CompletedTasks />);
-    const task1 = screen.getByText(/task1/i);
+    const task1 = screen.getByRole("heading", { name: /task1/i });
     expect(task1).toBeInTheDocument();
 
-    const task2 = screen.queryByText(/task2/i);
+    const task2 = screen.queryByRole("heading", { name: /task2/i });
     expect(task2).not.toBeInTheDocument();
 
-    const task3 = screen.queryByText(/task3/i);
+    const task3 = screen.queryByRole("heading", { name: /taks3/i });
     expect(task3).not.toBeInTheDocument();
+
+    const task1Due = screen.getByText(/due:/i);
+    expect(task1Due).toBeInTheDocument();
   });
 
   it("should handle the checkbox changes", async () => {
