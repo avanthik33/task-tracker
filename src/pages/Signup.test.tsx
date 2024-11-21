@@ -70,7 +70,6 @@ describe("Signup component", () => {
 
   it("should display error messages when input fields are missing", async () => {
     renderSignup();
-
     fireEvent.submit(screen.getByRole("form"));
     await waitFor(() => {
       expect(screen.getByText(/Username is required./i)).toBeInTheDocument();
