@@ -23,28 +23,31 @@ describe("PendingTask component", () => {
   it("should display 'No loggedUser found!' when there is no user", () => {
     localStorage.removeItem("loggedUser");
     render(<PendingTasks />);
-    const heading = screen.getByText(/No loggedUser found!/i);
+    const heading = screen.getByRole("heading", {
+      name: /no loggeduser found/i,
+    });
     expect(heading).toBeInTheDocument();
   });
 
   it("should display the 'pending task' heading when a user is loggedIn", () => {
     signin();
-
     render(<PendingTasks />);
-    expect(screen.getByText(/pending tasks/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /pending tasks/i })
+    ).toBeInTheDocument();
   });
 
   it("should display no pending task when there is no pending tasks", () => {
     signin();
-
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<PendingTasks />);
-    expect(screen.getByText(/no pending task/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /no pending task/i })
+    ).toBeInTheDocument();
   });
 
   it("should display the pending tasks when there is pending tasks", () => {
     signin();
-
     localStorage.setItem(
       "tasks",
       JSON.stringify([
@@ -76,7 +79,6 @@ describe("PendingTask component", () => {
     );
 
     render(<PendingTasks />);
-
     expect(screen.queryByText(/task2/i)).toBeInTheDocument();
     expect(screen.queryByText(/task1/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/task3/i)).not.toBeInTheDocument();
@@ -84,7 +86,6 @@ describe("PendingTask component", () => {
 
   it("should handle the checkbox changes", async () => {
     signin();
-
     localStorage.setItem(
       "tasks",
       JSON.stringify([
