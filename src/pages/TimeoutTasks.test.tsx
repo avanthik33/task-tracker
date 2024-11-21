@@ -24,13 +24,17 @@ describe("TimoutTasks component", () => {
   it("should display 'no loggedUser found!' when there is not loggedUser", () => {
     localStorage.removeItem("loggedUser");
     render(<TimoutTasks />);
-    expect(screen.getByText(/no loggeduser found!/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /no loggeduser found!/i })
+    ).toBeInTheDocument();
   });
 
   it("should display timeout tasks when the page loads", () => {
     signin();
     render(<TimoutTasks />);
-    expect(screen.getByText(/timeout tasks/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /timeout tasks/i })
+    ).toBeInTheDocument();
   });
 
   it("should display 'no timeout tasks' when there is not timeout tasks", () => {
@@ -38,12 +42,13 @@ describe("TimoutTasks component", () => {
 
     localStorage.setItem("tasks", JSON.stringify([]));
     render(<TimoutTasks />);
-    expect(screen.getByText(/no timeout tasks/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /no timeout tasks/i })
+    ).toBeInTheDocument();
   });
 
   it("should display all the timeout tasks", () => {
     signin();
-
     localStorage.setItem(
       "tasks",
       JSON.stringify([

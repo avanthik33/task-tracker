@@ -6,33 +6,29 @@ import { BrowserRouter } from "react-router-dom";
 
 describe("navigation component", () => {
   const renderNav = () => {
-    render(
-      <BrowserRouter>
-        <Navigation />
-      </BrowserRouter>
-    );
+    render(<Navigation />, { wrapper: BrowserRouter });
   };
   it("should display the homeLink", () => {
     renderNav();
-    const homeLink = screen.getByText(/home/i);
+    const homeLink = screen.getByRole("link", { name: /home/i });
     expect(homeLink).toBeInTheDocument();
   });
 
   it("should display the pendingLink ", () => {
     renderNav();
-    const pendingLink = screen.getByText(/pending/i);
+    const pendingLink = screen.getByRole("link", { name: /pending/i });
     expect(pendingLink).toBeInTheDocument();
   });
 
   it("should display the completedLink ", () => {
     renderNav();
-    const completedLink = screen.getByText(/completed/i);
+    const completedLink = screen.getByRole("link", { name: /completed/i });
     expect(completedLink).toBeInTheDocument();
   });
 
   it("should display the timeoutLink ", () => {
     renderNav();
-    const timeoutLink = screen.getByText(/timeout/i);
+    const timeoutLink = screen.getByRole("link", { name: /timeout/i });
     expect(timeoutLink).toBeInTheDocument();
   });
 
