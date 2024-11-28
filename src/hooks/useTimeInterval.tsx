@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { UseTimeIntervalProps } from "../typesAndInterfaces";
 import { Tasks } from "../typesAndInterfaces";
 
-const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
+export const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
   console.log("<UseTimeInterval>");
   const [currTime, setCurrTime] = useState(new Date());
   const [tasks, setTasks] = useState(task);
@@ -37,4 +37,3 @@ const useTimeInterval = ({ task }: UseTimeIntervalProps) => {
   return { tasks };
 };
 
-export default useTimeInterval;

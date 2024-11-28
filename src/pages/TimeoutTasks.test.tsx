@@ -21,7 +21,9 @@ describe("TimoutTasks component", () => {
       })
     );
   };
+
   it("should display 'no loggedUser found!' when there is not loggedUser", () => {
+    
     localStorage.removeItem("loggedUser");
     render(<TimoutTasks />);
     expect(

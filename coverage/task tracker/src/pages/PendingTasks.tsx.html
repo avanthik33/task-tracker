@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/pages/CompletedTasks.tsx</title>
+    <title>Code coverage report for task tracker/src/pages/PendingTasks.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/pages</a> CompletedTasks.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">task tracker/src/pages</a> PendingTasks.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -170,7 +170,8 @@
 <a name='L105'></a><a href='#L105'>105</a>
 <a name='L106'></a><a href='#L106'>106</a>
 <a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -232,6 +233,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -277,14 +279,14 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Fragment, useEffect, useState } from "react";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
 import { Tasks } from "../typesAndInterfaces";
 import { signupData } from "../typesAndInterfaces";
-import useTimeInterval from "../hooks/useTimeInterval";
+import {useTimeInterval} from "../hooks/useTimeInterval";
 import { handleCheckboxChange } from "../utils";
 &nbsp;
-const CompletedTasks: React.FC = () =&gt; {
-  console.log("&lt;CompletedTasks&gt;");
+const PendingTasks: React.FC = () =&gt; {
+  console.log("&lt;PendingTasks&gt;");
   const storedUser = localStorage.getItem("loggedUser");
   const user: signupData | null = storedUser ? JSON.parse(storedUser) : null;
 &nbsp;
@@ -298,7 +300,7 @@ const CompletedTasks: React.FC = () =&gt; {
         if (storedTasks) {
           const tasks: Tasks[] = JSON.parse(storedTasks);
           const filteredTasks = tasks.filter(
-            (item) =&gt; item.userId === userId &amp;&amp; item.status === "completed"
+            (item) =&gt; item.userId === userId &amp;&amp; item.status === "pending"
           );
           setTasks((prevTasks) =&gt; {
             if (JSON.stringify(prevTasks) !== JSON.stringify(filteredTasks)) {
@@ -332,18 +334,19 @@ const CompletedTasks: React.FC = () =&gt; {
   }
   if (tasks.length === 0) {
     return (
-      &lt;&gt;
-        &lt;h1 className="text-3xl font-bold mt-5 text-gray-800 mb-6 text-center"&gt;
-          NO Completed Tasks
-        &lt;/h1&gt; 
-      &lt;/&gt;
+      &lt;div className="flex justify-center items-center min-h-screen"&gt;
+        &lt;h2 className="text-2xl font-semibold text-gray-700"&gt;
+          No Pending Tasks
+        &lt;/h2&gt;
+      &lt;/div&gt;
     );
   }
+&nbsp;
   return (
-    &lt;Fragment&gt;
+    &lt;&gt;
       &lt;div className="max-w-2xl mx-auto mt-10 px-4 py-6"&gt;
         &lt;h1 className="text-3xl font-bold text-gray-800 mb-6 text-center"&gt;
-          Completed Tasks
+          Pending Tasks
         &lt;/h1&gt;
         &lt;div className="space-y-6"&gt;
           {tasks.map((value) =&gt; (
@@ -363,8 +366,8 @@ const CompletedTasks: React.FC = () =&gt; {
                   type="checkbox"
                   name={`status-${value.id}`}
                   id={`status-${value.id}`}
-                  data-testid={`data-test-${value.id}`}
                   checked={value.status === "completed"}
+                  data-testid={`test-id-${value.id}`}
                   onChange={(event) =&gt; handleChange(event, value.id)}
                   className="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg checked:bg-blue-600 checked:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 ease-in-out"
                 /&gt;
@@ -372,18 +375,18 @@ const CompletedTasks: React.FC = () =&gt; {
                   htmlFor={`status-${value.id}`}
                   className="text-sm text-gray-700"
                 &gt;
-                  Uncheck here
+                  Mark as Completed
                 &lt;/label&gt;
               &lt;/div&gt;
             &lt;/div&gt;
           ))}
         &lt;/div&gt;
       &lt;/div&gt;
-    &lt;/Fragment&gt;
+    &lt;/&gt;
   );
 };
 &nbsp;
-export default CompletedTasks;
+export default PendingTasks;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -391,16 +394,16 @@ export default CompletedTasks;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-19T11:43:08.380Z
+                at 2024-11-28T07:31:53.543Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
