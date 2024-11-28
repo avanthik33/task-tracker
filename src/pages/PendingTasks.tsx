@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Tasks } from "../typesAndInterfaces";
 import { signupData } from "../typesAndInterfaces";
-import useTimeInterval from "../hooks/useTimeInterval";
+import {useTimeInterval} from "../hooks/useTimeInterval";
 import { handleCheckboxChange } from "../utils";
 
 const PendingTasks: React.FC = () => {

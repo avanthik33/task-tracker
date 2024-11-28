@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Error from "../components/Error";
 import { signupData } from "../typesAndInterfaces";
-import useTimeInterval from "../hooks/useTimeInterval";
+import {useTimeInterval} from "../hooks/useTimeInterval";
 import { Tasks } from "../typesAndInterfaces";
 import { handleCheckboxChange } from "../utils";
 import AOS from "aos";
